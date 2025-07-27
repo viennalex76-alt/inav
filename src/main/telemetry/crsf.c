@@ -308,6 +308,20 @@ typedef enum {
 } crsrRfPower_e;
 
 /*
+0x0A Airspeed sensor
+Payload:
+int16      Airspeed in 0.1 * km/h (hectometers/h)
+*/
+static void crsfFrameAirspeedSensor(sbuf_t *dst)
+{
+    // use sbufWrite since CRC does not include frame length
+    sbufWriteU8(dst, CRSF_FRAME_AIRSPEED_SENSOR_PAYLOAD_SIZE + CRSF_FRAME_LENGTH_TYPE_CRC);
+    crsfSerialize8(dst, CRSF_FRAMETYPE_AIRSPEED_SENSOR);
+    crsfSerialize16(dst, pitot.airSpeed);
+}
+
+
+/*
 0x1E Attitude
 Payload:
 int16_t     Pitch angle ( rad / 10000 )
